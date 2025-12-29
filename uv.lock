@@ -549,7 +549,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.10.8" },
-    { name = "numpy", specifier = ">=2.4.0" },
+    { name = "numpy", specifier = ">=1.26.0" },
     { name = "opencv-python", specifier = ">=4.11.0.86" },
     { name = "pyqt6", specifier = ">=6.10.1" },
     { name = "pyyaml", specifier = ">=6.0.3" },
