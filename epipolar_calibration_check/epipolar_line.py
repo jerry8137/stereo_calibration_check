@@ -4,6 +4,7 @@ Module to draw epipolar lines on images using corner detection.
 import cv2 as cv
 import numpy as np
 from feature_detection.corners import corner_detection
+from feature_detection.sift import sift_feature_detection
 
 
 def drawlines(img1, img2, lines, pts1, pts2):
@@ -25,6 +26,24 @@ def drawlines(img1, img2, lines, pts1, pts2):
 def draw_epilines_corners(img1: np.ndarray,
                           img2: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     pts1, pts2 = corner_detection(img1, img2)
+    # Compute Fundamental Matrix
+    F, mask = cv.findFundamentalMat(pts1, pts2, cv.FM_LMEDS)
+    pts1 = pts1[mask.ravel() == 1]
+    pts2 = pts2[mask.ravel() == 1]
+
+    lines1 = cv.computeCorrespondEpilines(pts2.reshape(-1, 1, 2), 2, F)
+    lines1 = lines1.reshape(-1, 3)
+    img5, img6 = drawlines(img1, img2, lines1, pts1, pts2)
+
+    lines2 = cv.computeCorrespondEpilines(pts1.reshape(-1, 1, 2), 1, F)
+    lines2 = lines2.reshape(-1, 3)
+    img3, img4 = drawlines(img2, img1, lines2, pts2, pts1)
+    return img5, img3
+
+
+def draw_epilines_sift(img1: np.ndarray,
+                       img2: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    pts1, pts2 = sift_feature_detection(img1, img2)
     # Compute Fundamental Matrix
     F, mask = cv.findFundamentalMat(pts1, pts2, cv.FM_LMEDS)
     pts1 = pts1[mask.ravel() == 1]
