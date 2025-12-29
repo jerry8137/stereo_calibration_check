@@ -17,7 +17,8 @@ def rectify_image(image: np.ndarray, output_path: [str | None], intrinsics: dict
 
     map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, R_new, P_new, (w, h),
                                                      cv2.CV_16SC2)
-    rectified_image = cv2.remap(image, map1, map2, cv2.INTER_LINEAR)
+    rectified_image = cv2.remap(image, map1, map2, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, 
+        borderValue=(0, 0, 0))
 
     if output_path is not None:
         cv2.imwrite(output_path, rectified_image)
