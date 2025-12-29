@@ -12,17 +12,10 @@ def display_images_side_by_side(img1: np.ndarray,
     """
     plt.figure(figsize=(10, 5))
 
-    plt.subplot(1, 2, 1)
-    plt.imshow(img1, cmap='gray')
-    plt.title(title1)
+    stacked_images = np.hstack((img1, img2))
+    plt.imshow(stacked_images, cmap='gray')
     plt.axis('off')
-
-    plt.subplot(1, 2, 2)
-    plt.imshow(img2, cmap='gray')
-    plt.title(title2)
-    plt.axis('off')
-
-    plt.tight_layout()
+    plt.title(f"{title1} (Left) vs {title2} (Right)")
     plt.show()
 
 
