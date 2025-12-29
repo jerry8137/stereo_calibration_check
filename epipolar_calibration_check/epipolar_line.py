@@ -44,6 +44,16 @@ def draw_epilines_corners(img1: np.ndarray,
 def draw_epilines_sift(img1: np.ndarray,
                        img2: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     pts1, pts2 = sift_feature_detection(img1, img2)
+    margin = 100
+    width = img1.shape[1]
+    height = img1.shape[0]
+
+    mask_inliers = (pts1[:, 0] > margin) & (pts1[:, 0] < width - margin) & \
+                   (pts1[:, 1] > margin) & (pts1[:, 1] < height - margin) & \
+                   (pts2[:, 0] > margin) & (pts2[:, 0] < width - margin) & \
+                   (pts2[:, 1] > margin) & (pts2[:, 1] < height - margin)
+    pts1 = pts1[mask_inliers]
+    pts2 = pts2[mask_inliers]
     # Compute Fundamental Matrix
     F, mask = cv.findFundamentalMat(pts1, pts2, cv.FM_LMEDS)
     pts1 = pts1[mask.ravel() == 1]
