@@ -496,6 +496,6 @@ dependencies = [
 requires-dist = [
     { name = "matplotlib" },
     { name = "numpy", specifier = ">=1.26.0" },
-    { name = "opencv-python", specifier = ">=4.11" },
+    { name = "opencv-python" },
     { name = "pyyaml" },
 ]
