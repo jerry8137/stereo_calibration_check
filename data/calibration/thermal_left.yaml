@@ -1,0 +1,31 @@
+# Flir 640 Left Camera
+image_width: 640
+image_height: 512
+camera_name: thermal_left
+
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [421.23237248, 0, 317.55165969,
+         0, 420.80872096, 255.54588954,
+         0, 0, 1]
+
+distortion_model: equidistant # radtan
+distortion_coefficients:
+  rows: 1
+  cols: 4
+  data: [-0.11053445, 0.20481263, -0.57743943, 0.45121438]
+
+rectification_matrix: # identity
+  rows: 3
+  cols: 3
+  data: [1., 0, 0, 
+         0, 1, 0,
+         0, 0, 1]
+
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [421.23237248, 0, 317.55165969, 0,
+         0, 420.80872096, 255.54588954, 0,
+         0, 0, 1, 0]
