@@ -11,11 +11,11 @@ if __name__ == "__main__":
     intrinsics1 = load_intrinsics('data/calibration/thermal_left.yaml')
     intrinsics2 = load_intrinsics('data/calibration/thermal_right.yaml')
 
-    P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
+    R1, R2, P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
 
-    rect_image1 = cv2.imread('data/images/chess_left_rect.png',
+    rect_image1 = cv2.imread('data/images/thermal_left_rectified.png',
                              cv2.IMREAD_GRAYSCALE)
-    rect_image2 = cv2.imread('data/images/chess_right_rect.png',
+    rect_image2 = cv2.imread('data/images/thermal_right_rectified.png',
                              cv2.IMREAD_GRAYSCALE)
     display_images_side_by_side(rect_image1, rect_image2, 'Rectified Images')
 
@@ -37,9 +37,9 @@ if __name__ == "__main__":
                                 'Epilines on Distorted Back Images')
 
     rectified_back_image1 = rectify_image(distorted_image1, None, intrinsics1,
-                                          P1)
+                                          R1, P1)
     rectified_back_image2 = rectify_image(distorted_image2, None, intrinsics2,
-                                          P2)
+                                          R2, P2)
     epiline_rectified_back_image1, epiline_rectified_back_image2 = draw_epilines(
         rectified_back_image1, rectified_back_image2)
     display_images_side_by_side(epiline_rectified_back_image1,
