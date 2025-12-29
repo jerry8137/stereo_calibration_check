@@ -3,8 +3,8 @@ Module to draw epipolar lines on images using corner detection.
 """
 import cv2 as cv
 import numpy as np
-from feature_detection.corners import corner_detection
-from feature_detection.sift import sift_feature_detection
+from ..feature_detection.corners import corner_detection
+from ..feature_detection.sift import sift_feature_detection
 
 
 def drawlines(img1, img2, lines, pts1, pts2):

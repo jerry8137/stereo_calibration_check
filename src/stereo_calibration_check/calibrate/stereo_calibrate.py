@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from utils.file_utils import load_intrinsics
 
 
 def get_projection_matrix(
