@@ -6,6 +6,7 @@ import numpy as np
 
 
 def rectify_image(image: np.ndarray, output_path: [str | None], intrinsics: dict,
+                  R_new: np.ndarray,
                   P_new: np.ndarray) -> np.ndarray:
     """
     Rectify a fisheye image using calibration data.
@@ -13,9 +14,8 @@ def rectify_image(image: np.ndarray, output_path: [str | None], intrinsics: dict
     h, w = image.shape[:2]
     K = intrinsics['K']
     D = intrinsics['D']
-    R = intrinsics['R']
 
-    map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, R, P_new, (w, h),
+    map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, R_new, P_new, (w, h),
                                                      cv2.CV_16SC2)
     rectified_image = cv2.remap(image, map1, map2, cv2.INTER_LINEAR)
 

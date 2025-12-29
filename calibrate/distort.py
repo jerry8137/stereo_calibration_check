@@ -28,7 +28,7 @@ def distort_image(image: np.ndarray, intrinsics: dict, P_new: np.ndarray) -> np.
     
     # Apply Rotation (Rectification rotation)
     # We use the inverse because we are going from Distorted Space -> Rectified Space
-    rectified_3d = (R @ undistorted_norm_homo.reshape(-1, 3).T).T
+    rectified_3d = (R.T @ undistorted_norm_homo.reshape(-1, 3).T).T
     
     # Project onto the Rectified Camera Matrix (P_new)
     # P_new is typically [K_new | 0] or [K_new | translation]

@@ -2,8 +2,10 @@ import cv2
 import numpy as np
 from utils.file_utils import load_intrinsics
 
-def get_projection_matrix(intrinsics1: dict,
-                          intrinsics2: dict) -> tuple[np.ndarray, np.ndarray]:
+
+def get_projection_matrix(
+    intrinsics1: dict, intrinsics2: dict
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Get the projection matrices for stereo rectification from two calibration files.
     """
@@ -25,6 +27,4 @@ def get_projection_matrix(intrinsics1: dict,
         T,
         flags=cv2.CALIB_ZERO_DISPARITY,
         balance=0.0)
-    return P1, P2
-
-
+    return R1, R2, P1, P2

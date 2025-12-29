@@ -11,31 +11,55 @@ if __name__ == "__main__":
     intrinsics1 = load_intrinsics('data/calibration/thermal_left.yaml')
     intrinsics2 = load_intrinsics('data/calibration/thermal_right.yaml')
 
-    # P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
-    P1 = intrinsics1['P']
-    P2 = intrinsics2['P']
-
     image1 = cv2.imread('left2.png', cv2.IMREAD_GRAYSCALE)
     image2 = cv2.imread('right2.png', cv2.IMREAD_GRAYSCALE)
-    rect_image1 = rectify_image(image1, None, intrinsics1, P1)
-    rect_image2 = rectify_image(image2, None, intrinsics2, P2)
+    rect_image1 = rectify_image(image1, None, intrinsics1, intrinsics1['R'],
+                                intrinsics1['P'])
+    rect_image2 = rectify_image(image2, None, intrinsics2, intrinsics2['R'],
+                                intrinsics2['P'])
     display_images_side_by_side(rect_image1, rect_image2, 'Rectified Images')
     cv2.imwrite('data/images/chess_left_rect.png', rect_image1)
     cv2.imwrite('data/images/chess_right_rect.png', rect_image2)
 
     epiline_image1, epiline_image2 = draw_epilines(rect_image1, rect_image2)
-    display_images_side_by_side(epiline_image1, epiline_image2, 'Epilines on Rectified Images')
+    display_images_side_by_side(epiline_image1, epiline_image2,
+                                'Epilines on Rectified Images')
 
-    distorted_image1 = distort_image(rect_image1, intrinsics1, P1)
-    distorted_image2 = distort_image(rect_image2, intrinsics2, P2)
-    display_images_side_by_side(distorted_image1, distorted_image2, 'Distorted Back Images')
+    distorted_image1 = distort_image(rect_image1, intrinsics1, intrinsics1['P'])
+    distorted_image2 = distort_image(rect_image2, intrinsics2, intrinsics2['P'])
+    display_images_side_by_side(distorted_image1, distorted_image2,
+                                'Distorted Back Images')
+    diff1 = cv2.absdiff(image1, distorted_image1)
+    diff2 = cv2.absdiff(image2, distorted_image2)
+    display_images_side_by_side(diff1, diff2, 'Difference Images')
 
-    epiline_distorted_image1, epiline_distorted_image2 = draw_epilines(distorted_image1, distorted_image2)
-    display_images_side_by_side(epiline_distorted_image1, epiline_distorted_image2, 'Epilines on Distorted Back Images')
+    rect_image1_2 = rectify_image(distorted_image1, None, intrinsics1, intrinsics1['R'],
+                                  intrinsics1['P'])
+    rect_image2_2 = rectify_image(distorted_image2, None, intrinsics2, intrinsics2['R'],
+                                  intrinsics2['P'])
+    diff_rect1 = cv2.absdiff(rect_image1, rect_image1_2)
+    diff_rect2 = cv2.absdiff(rect_image2, rect_image2_2)
+    display_images_side_by_side(diff_rect1, diff_rect2, 'Difference Rectified Images')
 
-    P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
+    epiline_distorted_image1, epiline_distorted_image2 = draw_epilines(
+        distorted_image1, distorted_image2)
+    display_images_side_by_side(epiline_distorted_image1,
+                                epiline_distorted_image2,
+                                'Epilines on Distorted Back Images')
 
-    rectified_back_image1 = rectify_image(distorted_image1, None, intrinsics1, P1)
-    rectified_back_image2 = rectify_image(distorted_image2, None, intrinsics2, P2)
-    epiline_rectified_back_image1, epiline_rectified_back_image2 = draw_epilines(rectified_back_image1, rectified_back_image2)
-    display_images_side_by_side(epiline_rectified_back_image1, epiline_rectified_back_image2, 'Epilines on Rectified Back Images')
+    R1, R2, P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
+    print(f'R1: {R1}')
+    print(f'P1: {P1}')
+    print(f'R2: {R2}')
+    print(f'P2: {P2}')
+
+    rectified_back_image1 = rectify_image(distorted_image1, None, intrinsics1,
+                                          R1, P1)
+    rectified_back_image2 = rectify_image(distorted_image2, None, intrinsics2,
+                                          R2, P2)
+    epiline_rectified_back_image1, epiline_rectified_back_image2 = draw_epilines(
+        rectified_back_image1, rectified_back_image2)
+    display_images_side_by_side(epiline_rectified_back_image1,
+                                epiline_rectified_back_image2,
+                                'Epilines on Rectified Back Images')
+
