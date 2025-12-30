@@ -5,8 +5,18 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "argparse>=1.4.0",
     "matplotlib",
     "numpy>=1.26.0",
+    "opencv-python>=4.11.0.86",
     "opencv-python-headless>=4.11",
+    "pyqt6>=6.10.1",
     "pyyaml",
 ]
+
+[project.scripts]
+stereo-calibration-check = "stereo_calibration_check.main:main"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
