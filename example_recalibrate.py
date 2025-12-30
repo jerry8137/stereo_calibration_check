@@ -1,9 +1,9 @@
-from calibrate.stereo_calibrate import get_projection_matrix
-from calibrate.undistort import rectify_image
-from calibrate.distort import distort_image
-from epipolar_calibration_check.epipolar_line import draw_epilines_sift as draw_epilines
-from utils.file_utils import load_intrinsics
-from utils.visualization import display_images_side_by_side
+from stereo_calibration_check.calibrate.stereo_calibrate import get_projection_matrix
+from stereo_calibration_check.calibrate.undistort import rectify_image
+from stereo_calibration_check.calibrate.distort import distort_image
+from stereo_calibration_check.epipolar_calibration_check.epipolar_line import draw_epilines_sift as draw_epilines
+from stereo_calibration_check.utils.file_utils import load_intrinsics
+from stereo_calibration_check.utils.visualization import display_images_side_by_side
 
 import cv2
 
@@ -13,9 +13,9 @@ if __name__ == "__main__":
 
     R1, R2, P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
 
-    rect_image1 = cv2.imread('data/images/thermal_left_rectified.png',
+    rect_image1 = cv2.imread('data/images/sync_left.png',
                              cv2.IMREAD_GRAYSCALE)
-    rect_image2 = cv2.imread('data/images/thermal_right_rectified.png',
+    rect_image2 = cv2.imread('data/images/sync_right.png',
                              cv2.IMREAD_GRAYSCALE)
     display_images_side_by_side(rect_image1, rect_image2, 'Rectified Images')
 
