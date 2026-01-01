@@ -3,10 +3,18 @@ import numpy as np
 
 
 def get_projection_matrix(
-    intrinsics1: dict, intrinsics2: dict
+    intrinsics1: dict, intrinsics2: dict, baseline: float = 0.12
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Get the projection matrices for stereo rectification from two calibration files.
+
+    Args:
+        intrinsics1: Left camera intrinsics dictionary
+        intrinsics2: Right camera intrinsics dictionary
+        baseline: Stereo baseline distance in meters (default: 0.12m = 120mm)
+
+    Returns:
+        R1, R2, P1, P2: Rectification and projection matrices for left and right cameras
     """
     K1 = intrinsics1['K']
     D1 = intrinsics1['D']
@@ -16,7 +24,7 @@ def get_projection_matrix(
     h = intrinsics1['height']
 
     R = np.eye(3)
-    T = np.array([[0.12], [0], [0]])
+    T = np.array([[baseline], [0], [0]])
     R1, R2, P1, P2, Q = cv2.fisheye.stereoRectify(
         K1,
         D1,

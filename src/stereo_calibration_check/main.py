@@ -18,12 +18,14 @@ def main():
                         help='Path to the left camera calibration file')
     parser.add_argument('--right_calib', type=str, default='data/calibration/thermal_right.yaml',
                         help='Path to the right camera calibration file')
+    parser.add_argument('--baseline', type=float, default=0.12,
+                        help='Stereo baseline distance in meters (default: 0.12m = 120mm)')
     args = parser.parse_args()
 
     intrinsics1 = load_intrinsics(args.left_calib)
     intrinsics2 = load_intrinsics(args.right_calib)
 
-    R1, R2, P1, P2 = get_projection_matrix(intrinsics1, intrinsics2)
+    R1, R2, P1, P2 = get_projection_matrix(intrinsics1, intrinsics2, args.baseline)
 
     rect_image1 = cv2.imread(args.left_image,
                              cv2.IMREAD_GRAYSCALE)
